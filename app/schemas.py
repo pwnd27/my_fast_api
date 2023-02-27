@@ -43,7 +43,7 @@ class FilteredUserResponse(UserBase):
     id: uuid.UUID
 
 
-class ImageBaseSchema(BaseModel):
+class ImageBase(BaseModel):
     title: str
     user_id: uuid.UUID
 
@@ -51,17 +51,17 @@ class ImageBaseSchema(BaseModel):
         orm_mode = True
 
 
-class UploadImageSchema(ImageBaseSchema):
+class UploadImage(ImageBase):
     pass
 
 
-class ImageResponse(ImageBaseSchema):
+class ImageResponse(ImageBase):
     id: uuid.UUID
     user: FilteredUserResponse
     uploaded_at: datetime
 
 
-class UpdateImageSchema(BaseModel):
+class UpdateImage(BaseModel):
     title: str
     user_id: uuid.UUID | None = None
 

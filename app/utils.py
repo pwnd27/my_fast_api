@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from fastapi import Depends
 from passlib.context import CryptContext
 from jose import jwt
-from . import config
+import config
 
 
 @lru_cache()

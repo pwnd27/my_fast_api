@@ -4,10 +4,10 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
-from .crud import get_user_by_email
-from . import schemas
-from .utils import verify_password, config, get_settings
-from .database import get_db
+from crud import get_user_by_email
+import schemas
+from utils import verify_password, config, get_settings
+from database import get_db
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token', scheme_name='JWT')
 
