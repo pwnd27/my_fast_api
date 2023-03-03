@@ -1,7 +1,8 @@
 from datetime import datetime
 import uuid
 
-import schemas, models
+import schemas
+import models
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, status, APIRouter, Response
 from database import get_db
@@ -30,8 +31,8 @@ def get_image(db: Session = Depends(get_db)):
 #
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.ImageResponse)
 def upload_image(image: schemas.UploadImage, db: Session = Depends(get_db),
-                 user: schemas.UserBase = Depends(get_current_user)):
-    image.user_id = uuid.UUID(user.id)
+                 user: schemas.FilteredUserResponse = Depends(get_current_user)):
+    image.user_id = user.id
     new_image = models.Image(**image.dict())
     db.add(new_image)
     db.commit()

@@ -1,14 +1,15 @@
 from fastapi import FastAPI
+from fastapi.testclient import TestClient
 from fastapi.middleware.cors import CORSMiddleware
-from config import settings
 from routers import images, users
 
 
 app = FastAPI()
 
-origins = [
-    settings.CLIENT_ORIGIN
-]
+client = TestClient(app)
+
+
+origins = 'http://localhost:3000'
 
 app.add_middleware(
     CORSMiddleware,

@@ -6,8 +6,9 @@ from jose import JWTError, jwt
 
 from crud import get_user_by_email
 import schemas
-from utils import verify_password, config, get_settings
+from utils import verify_password, JWT_SECRET_KEY, ALGORITHM
 from database import get_db
+
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token', scheme_name='JWT')
 
@@ -21,15 +22,14 @@ def authenticate_user(db: Session, email: EmailStr, password: str):
     return user
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db),
-                           settings: config.Settings = Depends(get_settings)):
+async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail='Данные не валидны',
         headers={'WWW-Authenticate': 'Bearer'},
     )
     try:
-        payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=settings.ALGORITHM)
+        payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=ALGORITHM)
         email: str = payload.get('sub')
         if email is None:
             raise credentials_exception
